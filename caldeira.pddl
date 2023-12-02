@@ -126,7 +126,6 @@
 (:action get_domain
     ;Define os parâmetros da ação, onde ?v00 é um RAT observado, ?v01 é um host observado, e ?v08 é uma string.
     :parameters (?v00 - observedrat ?v01 - observedhost ?v02 - string)
-
     ;Inicia a definição das precondições necessárias para a ação, agrupadas logicamente (AND)
     :precondition
     ;todas as precondições devem ser verdadeiras
@@ -139,15 +138,12 @@
         (prop_host ?v00 ?v01)
         ;Requer que a propriedade 'phost' do RAT ?v00 seja conhecida
         (knows_property ?v00 phost)
-   
         ;Marca/Requer (eis a questão) que o host ?v01 tem propriedade FQDN de nome ?v02
         (PROP_FQDN ?v01 ?v02)
-
         ;Requer propriedade 'FQDN' do host é conhecida
         (knows_property ?v01 pfqdn)
     )
     :effect
-    
     ;Aplica os efeitos da ação para todos os domínios observados (?v03)
     (forall (?v03 - observeddomain)
         (when
@@ -159,7 +155,7 @@
                 (knows ?v03)
                 ;Marca a proprieade pdomain do host ?v01 como conhecida
                 (knows_property ?v01 pdomain)
-                ;
+                ;Associa o domínio observado com o host observado.
                 (mem_hosts ?v03 ?v01)
                 ;Marcar a propriedade do dominio ?v03 do phosts como conhecida
                 (knows_property ?v03 phosts)
