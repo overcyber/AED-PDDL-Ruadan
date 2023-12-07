@@ -1,24 +1,65 @@
 (define (domain network-enumeration)
-    (:requirements :strips :typing :conditional-effects)
+    (:requirements  :strips :typing :conditional-effects :equality
+                    :negative-preconditions :quantified-preconditions
+                    :disjunctive-preconditions :adl))
 
-    ; Definindo os tipos
-    (:types
-        host
-        port
-        service
-        version
-    )
+    ; 
+  ; Tipos
+  (:types
+    entity
+    host - entity
+    service - entity
+      web_service - service
+      mail_service - service
+      database_service - service
+      file_transfer_service - service
+      remote_access_service - service
+      streaming_service - service
+      messaging_service - service
+      application_service - service
+      network_management_service - service
+      custom_service - service
+    port - entity
+    vulnerability - entity
+    risk_level
+      critical_risk - risk_level
+      high_risk - risk_level
+      medium_risk - risk_level
+      low_risk - risk_level
+    exploit_method
+    version_type
+      operating_system_version - version_type
+      application_version - version_type
+    host_status
+  )
 
-    ; Predicados para descrever o estado do domínio
+  ; Constantes
+  (:constants
+    ; Exemplos de Portas Comuns
+    port80 port443 port22 port21 port23 port25 port110 port143 port3389 port3306 port5432 - port
+  )
+
+    ; "Predicados" descrevem o estado do domínio
     (:predicates
+        ; Indica se um host foi escaneado
         (host_scanned ?h - host)
+        ; Indica se uma porta está aberta em um host
         (port_open ?p - port ?h - host)
+        ; Indica se uma porta está fechada em um host
+        (port_closed ?p - port ?h - host)
+        ; Indica se um serviço foi detectado em uma porta de um host
         (service_detected ?s - service ?p - port ?h - host)
-        (service_version ?s - service ?v - version ?p - port ?h - host)
-        (vulnerability_known ?v - version ?s - service)
-        (exploitation_attempted ?p - port ?h - host)
-        (exploitation_successful ?p - port ?h - host)
+        ; Relaciona um serviço a uma versão específica em uma porta de um host
+        (service_version ?s - service ?v - version_type ?p - port ?h - host)
+        ; Indica se uma vulnerabilidade é conhecida para uma versão específica de um serviço
+        (vulnerability_known ?v - version_type ?s - service)
+        ; Marca uma porta em um host como o melhor alvo para exploração
         (best_exploitation_target ?p - port ?h - host)
+        ; Indica se um serviço em uma porta de um host é vulnerável
+        (service_vulnerable ?s - service ?p - port ?h - host)
+        ; Indica se uma tentativa de exploração foi realizada em uma porta de um host
+        (exploitation_attempted ?p - port ?h - host)
+        ; Condições adicionais podem ser adicionadas conforme necessário
     )
 
 
