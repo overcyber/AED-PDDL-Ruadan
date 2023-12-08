@@ -158,6 +158,8 @@
     )
 )
 
+
+
     ; Ação para escolher o melhor alvo para exploração
     (:action select_best_exploitation_target
         :parameters (?p - port ?h - host)
